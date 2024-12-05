@@ -1,0 +1,14 @@
+body {
+    background-color: #333;
+    color: #bfbfbf;
+    font-family: "Open Sans", sans-serif;
+    height: 90vh;
+    margin-top: 60px;
+}
+
+.error-button {
+    background: none;
+    border: none;
+    color: #00bfff;
+    cursor: pointer;
+}
