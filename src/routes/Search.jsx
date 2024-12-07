@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import RandomIDs from "../randomids/RandomIDs";
 import "../styles/Search.css";
+import React from 'react';
+
 
 
 const Search = () => {

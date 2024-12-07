@@ -2,6 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/context";
 import { useEffect, useState } from "react";
 import "../styles/MovieDetails.css";
+import React from 'react';
+
 
 const MovieDetails = () => {
   const { id } = useParams();

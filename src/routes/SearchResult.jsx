@@ -1,10 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import MovieList from "../components/MovieList";
 import "../styles/SearchResult.css";
+import React from 'react';
+
 
 const SearchResult = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const searchResult = location.state?.searchResult?.description || [];
 
   return (

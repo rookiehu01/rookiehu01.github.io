@@ -1,5 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/MovieList.css";
+import React from 'react';
+
 
 const MovieList = ({ movies = [], emptyMessage }) => {
     const navigate = useNavigate();

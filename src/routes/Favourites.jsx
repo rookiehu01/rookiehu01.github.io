@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MovieList from "../components/MovieList";
 import "../styles/Favourites.css";
 
+
 const Favourites = () => {
   const navigate = useNavigate();
   const [favouriteMovies, setFavouriteMovies] = useState([]);
