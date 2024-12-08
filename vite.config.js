@@ -1,11 +1,8 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { ghPages } from "vite-plugin-gh-pages";
 
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name].js',
-      },
-    },
-  },
+  plugins: [react(), ghPages()],
+  base: "/rookiehu01.github.io/",
 });
