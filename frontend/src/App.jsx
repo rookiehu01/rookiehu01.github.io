@@ -1,74 +1,49 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [status, setStatus] = useState()
-  const [error, setError] = useState()
+import MainPage from "./routes/MainPage.jsx";
+import Heartbeat from "./routes/Heartbeat.jsx";
+import Login from "./routes/Login.jsx";
+import Profile from "./routes/Profile.jsx";
+import NotFound from "./routes/NotFound.jsx";
+import { UserProvider, useUser } from "./context/UserContext.jsx";
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const resp = await fetch('/api/heartbeat')
-        if (!resp.ok) {
-          throw new Error('Wrong response')
-        }
-        const data = await resp.json()
-        setStatus(data.connection)
-      } catch (error) {
-        setStatus('error')
-        setError(error.message)
-      }
-    }
-    getData()
-  }, [])
+import Header from "./components/Header.jsx";
+import Alert from "./components/Alert.jsx";
 
-  const getStatus = () => {
-    switch (status) {
-      case 'ok':
-        return 'green'
-      case 'error':
-        return 'red'
-      default:
-        return 'yellow'
-    }
+import "./styling/App.css"
+import "./styling/Header.css"
+import "./styling/Login.css"
+import "./styling/Alert.css"
+import "./styling/Everythingelse.css"
+
+function AppContent() {
+  const { isLoading } = useUser();
+
+  if (isLoading) {
+    return <Alert title="Loading" message="Please wait..." />
   }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <div className="button">
-          <p>Connection to backend</p>
-          <div
-            style={{
-              marginLeft: 10,
-              background: getStatus(),
-              width: 20,
-              borderRadius: 100,
-              aspectRatio: 1,
-            }}
-          />
-        </div>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/heartbeat" element={<Heartbeat />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <UserProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </UserProvider>
+  );
+}
+export default App;

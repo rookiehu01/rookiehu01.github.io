@@ -1,0 +1,40 @@
+.header-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: none;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.header-div-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.header-div-left {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.header-a {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.3);
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: border-color 0.25s;
+}
+
+.header-a:hover {
+    border-color: #00bfff;
+}
+
+.header-a:hover,
+.header-a:hover:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
