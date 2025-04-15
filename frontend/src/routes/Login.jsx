@@ -7,6 +7,7 @@ import Alert from "../components/Alert.jsx";
 function Login() {
     const navigate = useNavigate();
     const { login, user } = useUser();
+    const [alert, setAlert] = useState(null);
 
     const [isRegistering, setIsRegistering] = useState(false);
     const [formData, setFormData] = useState({
@@ -22,7 +23,6 @@ function Login() {
         }
     }, [user]);
 
-    const [alert, setAlert] = useState(null);
 
     const toggleMode = () => {
         setIsRegistering(!isRegistering);
@@ -101,8 +101,9 @@ function Login() {
                         onClose={() => setAlert(null)}
                     />
                 )}
-
-                <h1>{isRegistering ? "Register" : "Login"}</h1>
+                <div className="login-title">
+                    <h1>{isRegistering ? "Register" : "Login"}</h1>
+                </div>
                 <form className="login-form" onSubmit={handleSubmit}>
                     <label htmlFor="username">Username</label>
                     <input id="username" type="text" value={formData.username} onChange={handleChange} required placeholder="supercoolusername" />

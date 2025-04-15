@@ -12,3 +12,7 @@
 .fancy-button:hover {
     background-color: #40cfff;
 }
+
+.pointer{
+    cursor: pointer;
+}

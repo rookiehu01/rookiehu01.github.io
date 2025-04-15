@@ -1,0 +1,138 @@
+.blogs-title-div {
+    position: relative;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.blogs-filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.blogs-filter-select {
+    padding: 0.4rem 0.8rem;
+    border: 2px solid #00bfff;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+}
+
+.blogs-filter-select option {
+    background-color: #2a2a2a;
+    color: white;
+}
+
+.blogs-myblogs-button {
+    padding: 0.4rem 0.8rem;
+    border: 2px solid #00bfff;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.blogs-myblogs-button.active {
+    background-color: #00bfff;
+    color: black;
+}
+
+.blogs-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 2rem;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.blogs-list {
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.blogs-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+.blogs-card:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.01);
+}
+
+.blogs-card-title,
+.blogs-card-author {
+    margin: 0;
+    color: #00bfff;
+}
+
+.blogs-card-content {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-word;
+}
+
+.blogs-card-image {
+    width: 8rem;
+    aspect-ratio: 1/1;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.blogs-card-left {
+    flex-shrink: 0;
+}
+
+.blogs-card-center {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.blogs-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.blogs-card-right p {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .blogs-title-div {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .blogs-title {
+        position: static;
+        transform: none;
+    }
+
+    .blogs-filter-controls {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}

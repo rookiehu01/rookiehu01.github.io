@@ -16,6 +16,10 @@
     text-align: center;
 }
 
+.login-title h1{
+    margin-top:0;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;

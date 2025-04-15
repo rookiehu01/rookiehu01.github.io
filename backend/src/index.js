@@ -36,7 +36,8 @@ const blogSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   updatedAt: { type: Date, default: Date.now },
-  attachments: [{ type: String }]
+  attachments: [{ type: String }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
 })
 blogSchema.set("toJSON", {
   virtuals: true
@@ -127,6 +128,71 @@ app.get("/me", authMW, async (req, res, next) => {
     next(error)
   }
 })
+
+
+// GET /blogs
+app.get("/blogs", async (req, res, next) => {
+  try {
+    const blogs = await Blog.find().populate("createdBy", "username");
+    res.json(blogs)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+// GET /blogs/:id
+app.get("/blogs/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const blog = await Blog.findById(id).populate("createdBy", "username")
+    if (!blog) {
+      next("Blog not found")
+    } else {
+      res.json(blog)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+// POST /newblog
+app.post("/newblog", authMW, async (req, res, next) => {
+  const { title, content } = req.body
+  const blog = await Blog.create({ title, content, createdBy: req.userId })
+  res.json(blog)
+})
+
+
+// POST /blogs/:id/like
+app.post("/blogs/:id/like", authMW, async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return next("Blog not found");
+
+    const userId = req.userId;
+    const alreadyLiked = blog.likes.includes(userId);
+
+    if (alreadyLiked) {
+      blog.likes = blog.likes.filter(uid => uid.toString() !== userId);
+    } else {
+      blog.likes.push(userId);
+    }
+
+    await blog.save();
+
+    res.json({
+      message: alreadyLiked ? "Unliked" : "Liked",
+      likes: blog.likes.length
+    });
+
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 
 app.use((err, req, res, next) => {
