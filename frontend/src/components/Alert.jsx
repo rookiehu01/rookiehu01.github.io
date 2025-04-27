@@ -21,7 +21,7 @@ function Alert({ title, message, onClose, color }) {
         <div className="alert-overlay" onClick={handleClose}>
             <div className={`alert-container ${isClosing ? "closing" : ""}`}>
                 <button className="alert-close" onClick={handleClose}>×</button>
-                
+
                 <div className="alert-content">
                     <h2 className="alert-title" style={{ color: color || "white" }}>{title}</h2>
                     <div className="alert-message">{message}</div>

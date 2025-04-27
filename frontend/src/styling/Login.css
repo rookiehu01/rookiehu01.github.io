@@ -7,7 +7,7 @@
 
 .login-container {
     background-color: #2a2a2a;
-    margin:2rem;
+    margin: 2rem;
     padding: 2rem 3rem;
     border-radius: 10px;
     box-shadow: 0 0 10px #000;
@@ -16,15 +16,15 @@
     text-align: center;
 }
 
-.login-title h1{
-    margin-top:0;
+.login-title h1 {
+    margin-top: 0;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    text-align: start;    
+    text-align: start;
 }
 
 .login-form label {

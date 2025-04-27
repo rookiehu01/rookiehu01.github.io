@@ -2,7 +2,8 @@ import { useUser } from "../context/UserContext.jsx"
 import Alert from "../components/Alert.jsx"
 import { useNavigate } from "react-router"
 import { useEffect, useState } from "react"
-import { BACKEND } from "../components/config.jsx"
+import BlogList from "../components/BlogList.jsx";
+import { BACKEND } from "../components/config.jsx";
 
 const MainPage = () => {
   const { user } = useUser()
@@ -15,7 +16,7 @@ const MainPage = () => {
 
 
   const fetchBlogs = async () => {
-    const blogs = await fetch(`${BACKEND}blogs`, {
+    const blogs = await fetch(`${BACKEND}/blogs`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -31,29 +32,7 @@ const MainPage = () => {
         color: "red"
       })
     }
-
-
-    if (Array.isArray(data) && data.length === 0) {
-      setAlert({
-        title: "No blogs found",
-        message: (
-          <>
-            {user ? (<button
-              onClick={() => navigate("/newblog")}
-              className="fancy-button"
-            >
-              Create one here!
-            </button>) : (
-              <button onClick={() => navigate("/login")}
-                className="fancy-button"> Log in to create one! </button>
-            )}
-
-          </>
-        )
-      });
-    } else {
-      setBlogs(data);
-    }
+    setBlogs(data);
   }
 
   useEffect(() => {
@@ -88,6 +67,10 @@ const MainPage = () => {
         return new Date(a.createdAt) - new Date(b.createdAt);
       case "createdAt-desc":
         return new Date(b.createdAt) - new Date(a.createdAt);
+      case "updatedAt-asc":
+        return new Date(a.updatedAt || a.createdAt) - new Date(b.updatedAt || b.createdAt);
+      case "updatedAt-desc":
+        return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt);
       default:
         return 0;
     }
@@ -110,12 +93,14 @@ const MainPage = () => {
           <select className="blogs-filter-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="title-asc">Title A-Z</option>
             <option value="title-desc">Title Z-A</option>
-            <option value="likes-asc">Likes ↑</option>
-            <option value="likes-desc">Likes ↓</option>
+            <option value="likes-desc">Most liked</option>
+            <option value="likes-asc">Least liked</option>
             <option value="author-asc">Author A-Z</option>
             <option value="author-desc">Author Z-A</option>
-            <option value="createdAt-asc">Date ↑ (Oldest first)</option>
-            <option value="createdAt-desc">Date ↓ (Newest first)</option>
+            <option value="createdAt-asc">Oldest created</option>
+            <option value="createdAt-desc">Newest created</option>
+            <option value="updatedAt-asc">Oldest updated</option>
+            <option value="updatedAt-desc">Recently updated</option>
           </select>
 
           {user && (
@@ -131,36 +116,28 @@ const MainPage = () => {
         <h1 className="blogs-title"> Blogs </h1>
       </div>
       <div className="blogs-list">
-        {filteredBlogs.map((blog) => {
-          const formattedDate = new Date(blog.createdAt).toLocaleDateString('hu-HU', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-          });
-
-          return (
-            <div key={blog._id} className="blogs-card" onClick={() => navigate(`/blog/${blog._id}`)}>
-              <div className="blogs-card-left">
-                <div className="blogs-card-image" />
-              </div>
-
-              <div className="blogs-card-center">
-                <h2 className="blogs-card-title">{blog.title}</h2>
-                <p className="blogs-card-author">{blog.createdBy?.username}</p>
-                <p className="blogs-card-content">
-                  {blog.content.length > 20
-                    ? `${blog.content.slice(0, 100)}...`
-                    : blog.content}
-                </p>
-              </div>
-
-              <div className="blogs-card-right">
-                <p>{formattedDate}</p>
-                <p><span style={{ color: "#00bfff" }}>❤</span> {blog.likes.length}</p>
-              </div>
-            </div>
-          );
-        })}
+        {filteredBlogs.length === 0 ? (
+          <div className="no-blogs">
+            <h2>No blogs found</h2>
+            {user ? (
+              <button
+                onClick={() => navigate("/newblog")}
+                className="fancy-button"
+              >
+                Create one here!
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="fancy-button"
+              >
+                Log in to create one!
+              </button>
+            )}
+          </div>
+        ) : (
+          <BlogList blogs={filteredBlogs} />
+        )}
       </div>
     </div>
   )

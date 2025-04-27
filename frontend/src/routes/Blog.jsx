@@ -1,8 +1,10 @@
 import { useParams, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
-import { BACKEND } from "../components/config.jsx"
 import { useUser } from "../context/UserContext.jsx"
 import Alert from "../components/Alert.jsx"
+import BlogAuthor from "../components/BlogAuthor.jsx";
+import { BACKEND } from "../components/config.jsx";
+import ReactMarkdown from "react-markdown"
 
 function Blog() {
     const { id } = useParams()
@@ -10,11 +12,19 @@ function Blog() {
     const [blog, setBlog] = useState(null)
     const [alert, setAlert] = useState(null)
     const { user } = useUser()
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
 
     const fetchBlog = async () => {
         try {
-            const res = await fetch(`${BACKEND}blogs/${id}`)
+            const res = await fetch(`${BACKEND}/blogs/${id}`)
             const data = await res.json()
+
+            if (data.message === "Blog not found") {
+                navigate("/notfound");
+                return;
+            }
 
             if (!res.ok) {
                 setAlert({
@@ -36,10 +46,42 @@ function Blog() {
         }
     }
 
+    const fetchComments = async () => {
+        const res = await fetch(`${BACKEND}/blogs/${id}/comments`);
+        const data = await res.json();
+        setComments(data);
+    };
+
+    const handleCommentPost = async () => {
+        if (!newComment.trim()) return;
+        const res = await fetch(`${BACKEND}/blogs/${id}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`
+            },
+            body: JSON.stringify({ content: newComment })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            setAlert({
+                title: "Error",
+                message: data.message,
+                color: "red"
+            });
+            return;
+        }
+
+        setNewComment("");
+        fetchComments();
+    };
+
     const handleLike = async () => {
         try {
-            const res = await fetch(`${BACKEND}blogs/${id}/like`, {
-                method: "POST",
+            const res = await fetch(`${BACKEND}/blogs/${id}/like`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${user.token}`
@@ -47,6 +89,30 @@ function Blog() {
             })
 
             const data = await res.json()
+
+            if (data.likers) {
+                setAlert({
+                    title: "Liked by",
+                    message: (
+                        <div style={{}}>
+                            {data.likers.length > 0 ? (
+                                data.likers.map((username, i) => (
+                                    <p
+                                        className="pointer blue"
+                                        key={i}
+                                        onClick={() => navigate(`/author/${username}`)}
+                                    >
+                                        {username}
+                                    </p>
+                                ))
+                            ) : (
+                                <p>No likes yet.</p>
+                            )}
+                        </div>
+                    )
+                });
+                return;
+            }
 
             if (!res.ok) {
                 setAlert({
@@ -58,6 +124,7 @@ function Blog() {
             }
 
             fetchBlog()
+
         } catch (err) {
             setAlert({
                 title: "Error",
@@ -67,22 +134,89 @@ function Blog() {
         }
     }
 
+    const handleDelete = async () => {
+        try {
+            const res = await fetch(`${BACKEND}/blogs/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setAlert({
+                    title: "Error",
+                    message: data.message || "Something went wrong",
+                    color: "red"
+                });
+                return;
+            }
+
+            navigate("/");
+        } catch (err) {
+            setAlert({
+                title: "Error",
+                message: err.message,
+                color: "red"
+            });
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            const res = await fetch(`${BACKEND}/comments/${commentId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setAlert({
+                    title: "Error",
+                    message: data.message || "Failed to delete comment",
+                    color: "red"
+                });
+                return;
+            }
+            fetchComments();
+        } catch (err) {
+            setAlert({
+                title: "Error",
+                message: err.message,
+                color: "red"
+            });
+        }
+    };
 
     useEffect(() => {
         fetchBlog()
+        fetchComments()
     }, [])
 
     if (alert) return <Alert title={alert.title} message={alert.message} color={alert.color} onClose={() => setAlert(null)} />
 
     if (!blog) return <Alert title="Loading" message="Please wait..." />
 
-    const formattedDate = new Date(blog.createdAt).toLocaleDateString('hu-HU', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-    });
+    const formatDate = (isoString) => {
+        return new Date(isoString).toLocaleDateString('hu-HU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
-    const isLiked = user && blog.likes.includes(user.id)
+    const autoGrow = (element) => {
+        element.style.height = "inherit";
+        element.style.height = `${element.scrollHeight}px`;
+    };
+
+    const isLiked = user && blog.likes.includes(user.id);
 
     return (
         <div className="blog-page">
@@ -90,29 +224,135 @@ function Blog() {
                 <div className="blog-title-data">
                     <div className="blog-title">
                         <h1>{blog.title}</h1>
+                        {blog.updatedAt && blog.updatedAt !== blog.createdAt && (
+                            <p className="blog-updated-date">Updated: {formatDate(blog.updatedAt)}</p>
+                        )}
                     </div>
-                    <div className="blog-data">
-                        <div className="blog-author-profilepic pointer" onClick={() => navigate(`/author/${blog.createdBy?.username}`)} />
-                        <div className="blog-details">
-                            <p className="blog-author-name pointer" onClick={() => navigate(`/author/${blog.createdBy?.username}`)}>{blog.createdBy?.username}</p>
-                            <p>{formattedDate}</p>
-                        </div>
-                    </div>
+                    <BlogAuthor user={blog.createdBy} date={blog.createdAt} />
                 </div>
 
                 <div className="blog-content">
-                    <p>{blog.content}</p>
+                    {blog.coverImageIndex !== undefined && blog.coverImageIndex !== null && blog.images && blog.images[blog.coverImageIndex] && (
+                        <img
+                            src={`${BACKEND}/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
+                            alt="cover"
+                        />
+                    )}
+                    <hr />
+                    <ReactMarkdown>{blog.content}</ReactMarkdown>
                 </div>
-                <div className="blog-like">
+
+                <div className="blog-interact">
                     <div className="blog-like-div">
                         <button
-                            className={`blog-like-button ${user && blog.likes.includes(user.id) ? "liked" : ""}`}
+                            className={`blog-interact-button ${isLiked ? "liked" : ""}`}
                             onClick={user ? handleLike : null}
                             disabled={!user}
                         >
-                            <span style={{ color: isLiked ? "black" : "#00bfff" }}>❤</span> Like ({blog.likes.length})
+                            <span style={{ color: isLiked ? "black" : "#00bfff", display: "inline-flex", alignItems: "center" }}>❤</span> Like ({blog.likes.length})
                         </button>
                     </div>
+
+                    {user && blog.createdBy._id === user.id && (
+                        <div className="blog-edit-div" style={{ display: "flex", gap: "1rem" }}>
+                            <button
+                                className="blog-interact-button"
+                                onClick={() => navigate(`/blog/${id}/edit`)}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="blog-interact-button delete"
+                                onClick={() => setDeleteConfirm(true)}
+                            >
+                                Delete
+                            </button>
+
+                            {deleteConfirm && (
+                                <Alert
+                                    title="Delete Blog"
+                                    message={
+                                        <div>
+                                            <p>Are you sure you want to delete this blog?</p>
+                                            <div style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                                marginTop: "1rem",
+                                                justifyContent: "center"
+                                            }}>
+                                                <button
+                                                    onClick={handleDelete}
+                                                    className="blog-interact-button delete"
+                                                >
+                                                    Yes, delete
+                                                </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirm(false)}
+                                                    className="blog-interact-button"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                    color="red"
+                                    onClose={() => setDeleteConfirm(false)}
+                                />
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="blog-container">
+                <div className="blog-comment">
+                    <h2 className="blog-comment-title">Comments ({comments.length})</h2>
+                    {user ? (
+                        <div className="blog-comment-form">
+                            <div className="blog-comment-textarea-wrapper">
+                                <textarea
+                                    value={newComment}
+                                    onChange={(e) => {
+                                        setNewComment(e.target.value);
+                                        autoGrow(e.target);
+                                    }}
+                                    placeholder="Write a comment..."
+                                    className="blog-comment-textarea textarea"
+                                    maxLength={250}
+                                    rows={1}
+                                />
+                                <div className="blog-comment-charcounter">
+                                    {newComment.length}/250
+                                </div>
+                            </div>
+                            <button
+                                className="fancy-button"
+                                onClick={handleCommentPost}
+                            >
+                                Post
+                            </button>
+                        </div>
+                    ) : (
+                        <p>Log in to comment!</p>
+                    )}
+
+                    {comments.length === 0 ? (
+                        <p>No comments yet.</p>
+                    ) : (
+                        comments.map((comment) => (
+                            <div key={comment._id} className="blog-comments">
+                                <div className="blog-comment-details">
+                                    <p className="blog-comment-author pointer" onClick={() => navigate(`/author/${comment.createdBy.username}`)}>{comment.createdBy.username}</p>
+                                    <span className="blog-comment-date">{formatDate(comment.createdAt)}</span>
+                                    {user && comment.createdBy._id === user.id && (
+                                        <button className="blog-interact-button delete" onClick={() => handleDeleteComment(comment._id)}>
+                                            Delete
+                                        </button>
+                                    )}
+                                </div>
+                                <p className="blog-comment-content">{comment.content}</p>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

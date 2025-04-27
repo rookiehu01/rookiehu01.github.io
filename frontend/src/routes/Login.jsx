@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BACKEND } from "../components/config.jsx";
 import { useUser } from "../context/UserContext.jsx";
 import Alert from "../components/Alert.jsx";
+import { BACKEND } from "../components/config.jsx";
+
 
 function Login() {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ function Login() {
         };
 
         try {
-            const res = await fetch(`${BACKEND + url}`, {
+            const res = await fetch(`${BACKEND}/${url}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -106,7 +107,7 @@ function Login() {
                 </div>
                 <form className="login-form" onSubmit={handleSubmit}>
                     <label htmlFor="username">Username</label>
-                    <input id="username" type="text" value={formData.username} onChange={handleChange} required placeholder="supercoolusername" />
+                    <input id="username" type="text" maxLength={16} value={formData.username} onChange={handleChange} required placeholder="supercoolusername" />
                     {isRegistering && (
                         <>
                             <label htmlFor="firstName">First name</label>

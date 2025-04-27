@@ -63,6 +63,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #2a2a2a;
+    margin: 0.5rem 0;
     padding: 1.5rem 2rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -73,7 +74,6 @@
 
 .blogs-card:hover {
     background-color: #3a3a3a;
-    transform: scale(1.01);
 }
 
 .blogs-card-title,
@@ -85,11 +85,17 @@
 .blogs-card-content {
     margin: 0.25rem 0;
     font-size: 0.95rem;
+    max-width: 100%;
     color: white;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
     word-break: break-word;
+    font-style: italic;
+}
+
+.blogs-card-stats {
+    margin-bottom: 0;
+    bottom: 0;
 }
 
 .blogs-card-image {
@@ -97,6 +103,17 @@
     aspect-ratio: 1/1;
     background-color: white;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.blogs-card-placeholder {
+    font-size: 3rem;
+    color: #aaa;
+    font-weight: bold;
 }
 
 .blogs-card-left {
@@ -107,18 +124,29 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    max-width: 70%;
 }
 
 .blogs-card-right {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    height: 100%;
 }
 
 .blogs-card-right p {
     margin: 0;
 }
+
+.no-blogs {
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.no-blogs h2 {
+    margin-bottom: 1rem;
+}
+
 
 @media (max-width: 768px) {
     .blogs-title-div {

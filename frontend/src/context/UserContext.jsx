@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
     const fetchUser = async (token) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`${BACKEND}me`, {
+            const res = await fetch(`${BACKEND}/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -36,7 +36,6 @@ export const UserProvider = ({ children }) => {
 
             const data = await res.json();
             setUser({ ...data, token });
-            console.log(data)
 
         } catch (err) {
             console.error("Auto-login failed", err);
@@ -48,7 +47,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token){
+        if (!token) {
             setIsLoading(false);
             return;
         }

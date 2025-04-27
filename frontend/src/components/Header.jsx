@@ -61,7 +61,7 @@ function Header() {
             <div className="header-div-right">
                 <a onClick={handleStatusClick} className="header-a">Server status</a>
                 {user ? (
-                    <a onClick={() => navigate("/profile")} className="header-a">Profile</a>
+                    <a onClick={() => navigate(`/author/${user.username}`)} className="header-a">{user.username}</a>
                 ) : (
                     <a onClick={() => navigate("/login")} className="header-a">Login</a>
                 )}

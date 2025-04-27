@@ -4,9 +4,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -15,6 +17,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -39,6 +42,7 @@
   color: #646cff;
   text-decoration: inherit;
 }
+
 .heartbeat-a:hover {
   color: #535bf2;
 }
@@ -62,17 +66,17 @@
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
   transition: border-color 0.25s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .heartbeat-button:hover {
   border-color: #646cff;
 }
+
 .heartbeat-button:focus,
 .heartbeat-button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
