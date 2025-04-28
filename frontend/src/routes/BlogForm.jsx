@@ -34,7 +34,7 @@ function BlogForm() {
 
   const fetchBlog = async () => {
     try {
-      const res = await fetch(`http://140.238.168.70:8000/blogs/${id}`);
+      const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`);
       const data = await res.json();
 
       if (data.message === "Blog not found") {
@@ -149,8 +149,8 @@ function BlogForm() {
       }
 
       const url = isEditMode
-        ? `http://140.238.168.70:8000/blogs/edit`
-        : `http://140.238.168.70:8000/newblog`;
+        ? `https://rookiehu.ddns.net/blogs/edit`
+        : `https://rookiehu.ddns.net/newblog`;
       const method = isEditMode ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
@@ -246,7 +246,7 @@ function BlogForm() {
                   key={globalIndex}
                   className={`attachment-preview ${isCover ? "selected" : ""}`}
                 >
-                  <img src={`http://140.238.168.70:8000/uploads/blog-images/${img}`} alt={`existing-${index}`} />
+                  <img src={`https://rookiehu.ddns.net/uploads/blog-images/${img}`} alt={`existing-${index}`} />
                   <p>{img.length > 20 ? img.substring(0, 17) + '...' : img}</p>
                   <div className="attachment-actions">
                     <button

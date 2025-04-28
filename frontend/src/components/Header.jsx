@@ -12,7 +12,7 @@ function Header() {
     const handleStatusClick = async () => {
         let newStatus = "idk";
         try {
-            const resp = await fetch('http://140.238.168.70:8000/heartbeat');
+            const resp = await fetch('https://rookiehu.ddns.net/heartbeat');
             if (!resp.ok) {
                 newStatus = "error";
             } else {

@@ -17,7 +17,7 @@ function Blog() {
 
     const fetchBlog = async () => {
         try {
-            const res = await fetch(`http://140.238.168.70:8000/blogs/${id}`)
+            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`)
             const data = await res.json()
 
             if (data.message === "Blog not found") {
@@ -46,14 +46,14 @@ function Blog() {
     }
 
     const fetchComments = async () => {
-        const res = await fetch(`http://140.238.168.70:8000/blogs/${id}/comments`);
+        const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/comments`);
         const data = await res.json();
         setComments(data);
     };
 
     const handleCommentPost = async () => {
         if (!newComment.trim()) return;
-        const res = await fetch(`http://140.238.168.70:8000/blogs/${id}/comments`, {
+        const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function Blog() {
 
     const handleLike = async () => {
         try {
-            const res = await fetch(`http://140.238.168.70:8000/blogs/${id}/like`, {
+            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/like`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -135,7 +135,7 @@ function Blog() {
 
     const handleDelete = async () => {
         try {
-            const res = await fetch(`http://140.238.168.70:8000/blogs/${id}`, {
+            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -166,7 +166,7 @@ function Blog() {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            const res = await fetch(`http://140.238.168.70:8000/comments/${commentId}`, {
+            const res = await fetch(`https://rookiehu.ddns.net/comments/${commentId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${user.token}`
@@ -233,7 +233,7 @@ function Blog() {
                 <div className="blog-content">
                     {blog.coverImageIndex !== undefined && blog.coverImageIndex !== null && blog.images && blog.images[blog.coverImageIndex] && (
                         <img
-                            src={`http://140.238.168.70:8000/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
+                            src={`https://rookiehu.ddns.net/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
                             alt="cover"
                         />
                     )}

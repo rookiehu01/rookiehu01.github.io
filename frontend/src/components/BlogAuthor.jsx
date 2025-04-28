@@ -8,7 +8,7 @@ function BlogAuthor({ user, date }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await fetch(`http://140.238.168.70:8000/users/${user.username}`);
+                const res = await fetch(`https://rookiehu.ddns.net/users/${user.username}`);
                 const data = await res.json();
                 setAuthor(data);
             } catch (err) {
@@ -18,7 +18,7 @@ function BlogAuthor({ user, date }) {
         fetchUser();
     }, [user.username]);
 
-    const avatarUrl = author.avatar ? `http://140.238.168.70:8000${author.avatar}` : `http://140.238.168.70:8000/public/defaultavatar.jpg`;
+    const avatarUrl = author.avatar ? `https://rookiehu.ddns.net${author.avatar}` : `https://rookiehu.ddns.net/public/defaultavatar.jpg`;
 
     return (
         <div className="blog-data">
