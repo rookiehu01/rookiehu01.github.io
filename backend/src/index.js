@@ -2,7 +2,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import api from './routes/api.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
@@ -97,7 +96,6 @@ mongoose.connection.once("open", async () => {
 })
 
 const app = express()
-app.use('/api', api)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
@@ -592,6 +590,11 @@ app.post("/users/:username/avatar", authMW, upload.single("avatar"), async (req,
     next(error);
   }
 });
+
+// GET /heartbeat
+app.get('/heartbeat', async (req, res) => {
+  res.json({ connection: 'ok' })
+})
 
 
 app.use((err, req, res, next) => {
