@@ -341,8 +341,7 @@ function Blog() {
                         comments.map((comment) => (
                             <div key={comment._id} className="blog-comments">
                                 <div className="blog-comment-details">
-                                    <p className="blog-comment-author pointer" onClick={() => navigate(`/author/${comment.createdBy.username}`)}>{comment.createdBy.username}</p>
-                                    <span className="blog-comment-date">{formatDate(comment.createdAt)}</span>
+                                    <BlogAuthor user={comment.createdBy} date={comment.createdAt} />
                                     {user && comment.createdBy._id === user.id && (
                                         <button className="blog-interact-button delete" onClick={() => handleDeleteComment(comment._id)}>
                                             Delete
