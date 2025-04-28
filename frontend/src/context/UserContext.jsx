@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import { useEffect } from "react";
-import { BACKEND } from "../components/config.jsx";
 
 const UserContext = createContext();
 
@@ -23,12 +22,11 @@ export const UserProvider = ({ children }) => {
     const fetchUser = async (token) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`${BACKEND}/me`, {
+            const res = await fetch(`/api/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-
             if (!res.ok) {
                 logout();
                 return;

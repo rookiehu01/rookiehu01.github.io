@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import { useEffect, useState } from "react";
 import Alert from "../components/Alert.jsx";
-import { BACKEND } from "../components/config.jsx";
 
 function BlogForm() {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ function BlogForm() {
 
   const fetchBlog = async () => {
     try {
-      const res = await fetch(`${BACKEND}/blogs/${id}`);
+      const res = await fetch(`/api/blogs/${id}`);
       const data = await res.json();
 
       if (data.message === "Blog not found") {
@@ -150,8 +149,8 @@ function BlogForm() {
       }
 
       const url = isEditMode
-        ? `${BACKEND}/blogs/edit`
-        : `${BACKEND}/newblog`;
+        ? `/api/blogs/edit`
+        : `/api/newblog`;
       const method = isEditMode ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
@@ -247,7 +246,7 @@ function BlogForm() {
                   key={globalIndex}
                   className={`attachment-preview ${isCover ? "selected" : ""}`}
                 >
-                  <img src={`${BACKEND}/uploads/blog-images/${img}`} alt={`existing-${index}`} />
+                  <img src={`/api/uploads/blog-images/${img}`} alt={`existing-${index}`} />
                   <p>{img.length > 20 ? img.substring(0, 17) + '...' : img}</p>
                   <div className="attachment-actions">
                     <button
