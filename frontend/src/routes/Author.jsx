@@ -13,6 +13,7 @@ function Author() {
     const [alert, setAlert] = useState(null);
     const [visibleCount, setVisibleCount] = useState(3);
     const [blogStats, setBlogStats] = useState({ blogs: 0, likes: 0, comments: 0 });
+    const [authorData, setAuthorData] = useState(null);
 
     const username = paramUsername || user?.username;
     const isOwnProfile = user?.username === username;
@@ -23,6 +24,17 @@ function Author() {
             navigate("/notfound");
             return;
         }
+
+        const fetchAuthor = async () => {
+            try {
+                const res = await fetch(`${BACKEND}/users/${username}`);
+                const data = await res.json();
+                setAuthorData(data);
+            } catch (err) {
+                setAuthorData(null);
+            }
+        };
+        fetchAuthor();
 
         const checkUser = async () => {
             try {
@@ -111,10 +123,10 @@ function Author() {
         <div className="author-page">
             <h1 className="author-title">
                 <img
-                    src={`${BACKEND}${user?.avatar || "/public/defaultavatar.jpg"}`}
+                    src={`${BACKEND}${authorData?.avatar || "/public/defaultavatar.jpg"}`}
                     alt="user-avatar-big"
-                    className="user-avatar-big pointer"
-                    onClick={handleAvatarUpdate}
+                    className={`user-avatar-big${isOwnProfile ? " pointer" : ""}`}
+                    {...(isOwnProfile ? { onClick: handleAvatarUpdate } : {})}
                 />
                 {isOwnProfile && fullName
                     ? `${fullName} (${username})`
