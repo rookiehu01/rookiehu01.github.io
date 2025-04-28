@@ -7,7 +7,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    allowedHosts: ['rookiehu.ddns.net'],
     proxy: {
       '/api': {
         target: 'http://140,238.168.70:8000',
