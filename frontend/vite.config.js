@@ -10,7 +10,7 @@ export default defineConfig({
     allowedHosts: ['rookiehu.ddns.net'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://140,238.168.70:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
