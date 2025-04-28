@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BACKEND } from "../components/config.jsx";
 
 function BlogAuthor({ user, date }) {
     const navigate = useNavigate();
@@ -9,7 +8,7 @@ function BlogAuthor({ user, date }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await fetch(`${BACKEND}/users/${user.username}`);
+                const res = await fetch(`/api/users/${user.username}`);
                 const data = await res.json();
                 setAuthor(data);
             } catch (err) {
@@ -19,7 +18,7 @@ function BlogAuthor({ user, date }) {
         fetchUser();
     }, [user.username]);
 
-    const avatarUrl = `${BACKEND}${author.avatar}` || `${BACKEND}/public/defaultavatar.jpg`;
+    const avatarUrl = author.avatar ? `/api${author.avatar}` : `/api/public/defaultavatar.jpg`;
 
     return (
         <div className="blog-data">

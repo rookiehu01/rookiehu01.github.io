@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { useUser } from "../context/UserContext.jsx"
 import Alert from "../components/Alert.jsx"
 import BlogAuthor from "../components/BlogAuthor.jsx";
-import { BACKEND } from "../components/config.jsx";
 import ReactMarkdown from "react-markdown"
 
 function Blog() {
@@ -18,7 +17,7 @@ function Blog() {
 
     const fetchBlog = async () => {
         try {
-            const res = await fetch(`${BACKEND}/blogs/${id}`)
+            const res = await fetch(`/api/blogs/${id}`)
             const data = await res.json()
 
             if (data.message === "Blog not found") {
@@ -47,14 +46,14 @@ function Blog() {
     }
 
     const fetchComments = async () => {
-        const res = await fetch(`${BACKEND}/blogs/${id}/comments`);
+        const res = await fetch(`/api/blogs/${id}/comments`);
         const data = await res.json();
         setComments(data);
     };
 
     const handleCommentPost = async () => {
         if (!newComment.trim()) return;
-        const res = await fetch(`${BACKEND}/blogs/${id}/comments`, {
+        const res = await fetch(`/api/blogs/${id}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -80,7 +79,7 @@ function Blog() {
 
     const handleLike = async () => {
         try {
-            const res = await fetch(`${BACKEND}/blogs/${id}/like`, {
+            const res = await fetch(`/api/blogs/${id}/like`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -136,7 +135,7 @@ function Blog() {
 
     const handleDelete = async () => {
         try {
-            const res = await fetch(`${BACKEND}/blogs/${id}`, {
+            const res = await fetch(`/api/blogs/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -167,7 +166,7 @@ function Blog() {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            const res = await fetch(`${BACKEND}/comments/${commentId}`, {
+            const res = await fetch(`/api/comments/${commentId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${user.token}`
@@ -234,7 +233,7 @@ function Blog() {
                 <div className="blog-content">
                     {blog.coverImageIndex !== undefined && blog.coverImageIndex !== null && blog.images && blog.images[blog.coverImageIndex] && (
                         <img
-                            src={`${BACKEND}/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
+                            src={`/api/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
                             alt="cover"
                         />
                     )}
