@@ -30,7 +30,7 @@ function BlogList({ blogs }) {
               <div
                 className="blogs-card-image"
                 style={imageToDisplay ? {
-                  backgroundImage: `url(/api/uploads/blog-images/${imageToDisplay})`,
+                  backgroundImage: `url(http://140.238.168.70:8000/uploads/blog-images/${imageToDisplay})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
                 } : {}}

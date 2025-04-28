@@ -49,7 +49,7 @@ function Login() {
         };
 
         try {
-            const res = await fetch(`/api/${url}`, {
+            const res = await fetch(`http://140.238.168.70:8000/${url}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)

@@ -15,7 +15,7 @@ const MainPage = () => {
 
 
   const fetchBlogs = async () => {
-    const blogs = await fetch(`/api/blogs`, {
+    const blogs = await fetch(`http://140.238.168.70:8000/blogs`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"

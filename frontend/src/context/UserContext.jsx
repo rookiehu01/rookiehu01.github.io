@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
     const fetchUser = async (token) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/me`, {
+            const res = await fetch(`http://140.238.168.70:8000/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

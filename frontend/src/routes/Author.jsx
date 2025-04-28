@@ -26,7 +26,7 @@ function Author() {
 
         const fetchAuthor = async () => {
             try {
-                const res = await fetch(`/api/users/${username}`);
+                const res = await fetch(`http://140.238.168.70:8000/users/${username}`);
                 const data = await res.json();
                 setAuthorData(data);
             } catch (err) {
@@ -37,7 +37,7 @@ function Author() {
 
         const checkUser = async () => {
             try {
-                const res = await fetch(`/api/users`);
+                const res = await fetch(`http://140.238.168.70:8000/users`);
                 const users = await res.json();
                 const exists = users.some(u => u.username === username);
                 if (!exists) {
@@ -55,7 +55,7 @@ function Author() {
 
         const fetchData = async () => {
             try {
-                const res = await fetch(`/api/blogs`);
+                const res = await fetch(`http://140.238.168.70:8000/blogs`);
                 const data = await res.json();
 
                 const filtered = data.filter(blog => blog.createdBy?.username === username);
@@ -76,7 +76,7 @@ function Author() {
 
         const fetchComments = async () => {
             try {
-                const res = await fetch(`/api/comments?user=${username}`);
+                const res = await fetch(`http://140.238.168.70:8000/comments?user=${username}`);
                 const data = await res.json();
 
                 if (Array.isArray(data)) {
@@ -98,7 +98,7 @@ function Author() {
     const handleDeleteProfile = async () => {
         setAlert(null);
         try {
-            const res = await fetch(`/api/users/${user.username}`, {
+            const res = await fetch(`http://140.238.168.70:8000/users/${user.username}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${user.token}` }
             });
@@ -122,7 +122,7 @@ function Author() {
         <div className="author-page">
             <h1 className="author-title">
                 <img
-                    src={`/api${authorData?.avatar || "/public/defaultavatar.jpg"}`}
+                    src={`http://140.238.168.70:8000${authorData?.avatar || "/public/defaultavatar.jpg"}`}
                     alt="user-avatar-big"
                     className={`user-avatar-big${isOwnProfile ? " pointer" : ""}`}
                     {...(isOwnProfile ? { onClick: handleAvatarUpdate } : {})}
@@ -216,7 +216,7 @@ function Author() {
                     const formData = new FormData();
                     formData.append("avatar", file);
                     try {
-                        const res = await fetch(`/api/users/${user.username}/avatar`, {
+                        const res = await fetch(`http://140.238.168.70:8000/users/${user.username}/avatar`, {
                             method: "POST",
                             headers: { Authorization: `Bearer ${user.token}` },
                             body: formData
