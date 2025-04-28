@@ -601,7 +601,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message, color: "red" })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
   console.info(`Server listening on localhost:${PORT}`)
 })
 
