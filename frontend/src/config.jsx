@@ -1,2 +1,2 @@
-const BACKEND_URL = "127.0.0.1:8000";
+const BACKEND_URL = "https://www.rookiehu.me/api";
 export default BACKEND_URL;
