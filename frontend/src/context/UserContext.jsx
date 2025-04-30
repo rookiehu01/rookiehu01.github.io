@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { useEffect } from "react";
+import BACKEND_URL from "../config.jsx";
 
 const UserContext = createContext();
 
@@ -22,7 +23,7 @@ export const UserProvider = ({ children }) => {
     const fetchUser = async (token) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/me`, {
+            const res = await fetch(`${BACKEND_URL}/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

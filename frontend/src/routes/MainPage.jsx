@@ -3,6 +3,7 @@ import Alert from "../components/Alert.jsx"
 import { useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 import BlogList from "../components/BlogList.jsx";
+import BACKEND_URL from "../config.jsx"
 
 const MainPage = () => {
   const { user } = useUser()
@@ -15,7 +16,7 @@ const MainPage = () => {
 
 
   const fetchBlogs = async () => {
-    const blogs = await fetch(`https://rookiehu.ddns.net/blogs`, {
+    const blogs = await fetch(`${BACKEND_URL}/blogs`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"

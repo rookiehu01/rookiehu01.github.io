@@ -2,6 +2,7 @@ import { useNavigate } from "react-router"
 import { useUser } from "../context/UserContext.jsx"
 import { useState } from "react"
 import Alert from "./Alert.jsx"
+import BACKEND_URL from "../config.jsx";
 
 function Header() {
     const navigate = useNavigate()
@@ -12,7 +13,7 @@ function Header() {
     const handleStatusClick = async () => {
         let newStatus = "idk";
         try {
-            const resp = await fetch('https://rookiehu.ddns.net/heartbeat');
+            const resp = await fetch(`${BACKEND_URL}/heartbeat`);
             if (!resp.ok) {
                 newStatus = "error";
             } else {

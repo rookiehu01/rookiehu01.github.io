@@ -1,3 +1,4 @@
+import BACKEND_URL from "../config.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import { useEffect, useState, useRef } from "react";
@@ -26,7 +27,7 @@ function Author() {
 
         const fetchAuthor = async () => {
             try {
-                const res = await fetch(`https://rookiehu.ddns.net/users/${username}`);
+                const res = await fetch(`${BACKEND_URL}/users/${username}`);
                 const data = await res.json();
                 setAuthorData(data);
             } catch (err) {
@@ -37,7 +38,7 @@ function Author() {
 
         const checkUser = async () => {
             try {
-                const res = await fetch(`https://rookiehu.ddns.net/users`);
+                const res = await fetch(`${BACKEND_URL}/users`);
                 const users = await res.json();
                 const exists = users.some(u => u.username === username);
                 if (!exists) {
@@ -55,7 +56,7 @@ function Author() {
 
         const fetchData = async () => {
             try {
-                const res = await fetch(`https://rookiehu.ddns.net/blogs`);
+                const res = await fetch(`${BACKEND_URL}/blogs`);
                 const data = await res.json();
 
                 const filtered = data.filter(blog => blog.createdBy?.username === username);
@@ -76,7 +77,7 @@ function Author() {
 
         const fetchComments = async () => {
             try {
-                const res = await fetch(`https://rookiehu.ddns.net/comments?user=${username}`);
+                const res = await fetch(`${BACKEND_URL}/comments?user=${username}`);
                 const data = await res.json();
 
                 if (Array.isArray(data)) {
@@ -98,10 +99,11 @@ function Author() {
     const handleDeleteProfile = async () => {
         setAlert(null);
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/users/${user.username}`, {
-                method: "DELETE",
-                headers: { Authorization: `Bearer ${user.token}` }
-            });
+            const res = await fetch(`${BACKEND_URL}/users/${user.username}`,
+                {
+                    method: "DELETE",
+                    headers: { Authorization: `Bearer ${user.token}` }
+                });
             const data = await res.json();
             if (!res.ok) {
                 setAlert({ title: "Error", message: data.message || "Failed to delete profile", color: "red" });
@@ -216,7 +218,7 @@ function Author() {
                     const formData = new FormData();
                     formData.append("avatar", file);
                     try {
-                        const res = await fetch(`https://rookiehu.ddns.net/users/${user.username}/avatar`, {
+                        const res = await fetch(`${BACKEND_URL}/users/${user.username}/avatar`, {
                             method: "POST",
                             headers: { Authorization: `Bearer ${user.token}` },
                             body: formData
