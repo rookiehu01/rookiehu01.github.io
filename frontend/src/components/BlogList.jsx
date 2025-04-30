@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BlogAuthor from "../components/BlogAuthor.jsx";
+import BACKEND_URL from "../config.jsx";
 
 
 function BlogList({ blogs }) {
@@ -30,7 +31,7 @@ function BlogList({ blogs }) {
               <div
                 className="blogs-card-image"
                 style={imageToDisplay ? {
-                  backgroundImage: `url(https://rookiehu.ddns.net/uploads/blog-images/${imageToDisplay})`,
+                  backgroundImage: `url(${BACKEND_URL}/uploads/blog-images/${imageToDisplay})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
                 } : {}}

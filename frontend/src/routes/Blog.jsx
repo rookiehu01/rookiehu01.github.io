@@ -1,3 +1,4 @@
+import BACKEND_URL from "../config.jsx";
 import { useParams, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 import { useUser } from "../context/UserContext.jsx"
@@ -17,7 +18,7 @@ function Blog() {
 
     const fetchBlog = async () => {
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`)
+            const res = await fetch(`${BACKEND_URL}/blogs/${id}`)
             const data = await res.json()
 
             if (data.message === "Blog not found") {
@@ -46,14 +47,14 @@ function Blog() {
     }
 
     const fetchComments = async () => {
-        const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/comments`);
+        const res = await fetch(`${BACKEND_URL}/blogs/${id}/comments`);
         const data = await res.json();
         setComments(data);
     };
 
     const handleCommentPost = async () => {
         if (!newComment.trim()) return;
-        const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/comments`, {
+        const res = await fetch(`${BACKEND_URL}/blogs/${id}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -79,7 +80,7 @@ function Blog() {
 
     const handleLike = async () => {
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}/like`, {
+            const res = await fetch(`${BACKEND_URL}/blogs/${id}/like`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -135,13 +136,14 @@ function Blog() {
 
     const handleDelete = async () => {
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+            const res = await fetch(`${BACKEND_URL}/blogs/${id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user.token}`
+                    }
+                });
 
             const data = await res.json();
 
@@ -166,12 +168,13 @@ function Blog() {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/comments/${commentId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+            const res = await fetch(`${BACKEND_URL}/comments/${commentId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${user.token}`
+                    }
+                });
             const data = await res.json();
             if (!res.ok) {
                 setAlert({

@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import { useEffect, useState } from "react";
 import Alert from "../components/Alert.jsx";
+import BACKEND_URL from "../config.jsx";
 
 function BlogForm() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function BlogForm() {
 
   const fetchBlog = async () => {
     try {
-      const res = await fetch(`https://rookiehu.ddns.net/blogs/${id}`);
+      const res = await fetch(`${BACKEND_URL}/blogs/${id}`);
       const data = await res.json();
 
       if (data.message === "Blog not found") {
@@ -149,8 +150,8 @@ function BlogForm() {
       }
 
       const url = isEditMode
-        ? `https://rookiehu.ddns.net/blogs/edit`
-        : `https://rookiehu.ddns.net/newblog`;
+        ? `${BACKEND_URL}/blogs/edit`
+        : `${BACKEND_URL}/newblog`;
       const method = isEditMode ? "PUT" : "POST";
       const res = await fetch(url, {
         method,

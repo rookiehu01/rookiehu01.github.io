@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import Alert from "../components/Alert.jsx";
+import BACKEND_URL from "../config.jsx";
 
 
 function Login() {
@@ -49,7 +50,7 @@ function Login() {
         };
 
         try {
-            const res = await fetch(`https://rookiehu.ddns.net/${url}`, {
+            const res = await fetch(`${BACKEND_URL}/${url}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
