@@ -95,10 +95,24 @@ mongoose.connection.once("open", async () => {
   console.log("Error", err)
 })
 
+const allowedOrigins = ['https://rookiehu01.github.io'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, false); // null origin (pl. curl) reject
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+
 const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions));
 app.use('/uploads', express.static('uploads'))
 app.use('/public', express.static('public'))
 
