@@ -124,7 +124,7 @@ function Author() {
         <div className="author-page">
             <h1 className="author-title">
                 <img
-                    src={`https://rookiehu.ddns.net${authorData?.avatar || "/public/defaultavatar.jpg"}`}
+                    src={`${BACKEND_URL}${authorData?.avatar || "/public/defaultavatar.jpg"}`}
                     alt="user-avatar-big"
                     className={`user-avatar-big${isOwnProfile ? " pointer" : ""}`}
                     {...(isOwnProfile ? { onClick: handleAvatarUpdate } : {})}

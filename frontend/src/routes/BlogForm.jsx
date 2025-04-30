@@ -247,7 +247,7 @@ function BlogForm() {
                   key={globalIndex}
                   className={`attachment-preview ${isCover ? "selected" : ""}`}
                 >
-                  <img src={`https://rookiehu.ddns.net/uploads/blog-images/${img}`} alt={`existing-${index}`} />
+                  <img src={`${BACKEND_URL}/uploads/blog-images/${img}`} alt={`existing-${index}`} />
                   <p>{img.length > 20 ? img.substring(0, 17) + '...' : img}</p>
                   <div className="attachment-actions">
                     <button
