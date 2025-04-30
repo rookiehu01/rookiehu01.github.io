@@ -236,7 +236,7 @@ function Blog() {
                 <div className="blog-content">
                     {blog.coverImageIndex !== undefined && blog.coverImageIndex !== null && blog.images && blog.images[blog.coverImageIndex] && (
                         <img
-                            src={`${BACKEND_URL}/blog-images/${blog.images[blog.coverImageIndex]}`}
+                            src={`${BACKEND_URL}/uploads/blog-images/${blog.images[blog.coverImageIndex]}`}
                             alt="cover"
                         />
                     )}
