@@ -99,7 +99,10 @@ mongoose.connection.once("open", async () => {
 const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors);
+app.use(cors({
+  origin: 'https://www.rookiehu.me'
+}));
+
 app.use('/uploads', express.static('uploads'))
 app.use('/public', express.static('public'))
 
