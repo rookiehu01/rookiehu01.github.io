@@ -11,19 +11,22 @@ export const UserProvider = ({ children }) => {
     const login = (userData) => {
         setUser(userData);
         const token = userData.token;
+        const username = userData.username;
         localStorage.setItem("token", token);
-        fetchUser(token);
+        localStorage.setItem("username", username);
+        fetchUser(token, username);
     };
 
     const logout = () => {
         setUser(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("username");
     };
 
-    const fetchUser = async (token) => {
+    const fetchUser = async (token, username) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`${BACKEND_URL}/me`, {
+            const res = await fetch(`${BACKEND_URL}/users/${username}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -46,11 +49,12 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
+        const username = localStorage.getItem("username");
         if (!token) {
             setIsLoading(false);
             return;
         }
-        fetchUser(token);
+        fetchUser(token, username);
     }, []);
 
     return (

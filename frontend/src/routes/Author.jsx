@@ -77,7 +77,7 @@ function Author() {
 
         const fetchComments = async () => {
             try {
-                const res = await fetch(`${BACKEND_URL}/comments?user=${username}`);
+                const res = await fetch(`${BACKEND_URL}/comments/${username}`);
                 const data = await res.json();
 
                 if (Array.isArray(data)) {

@@ -151,7 +151,7 @@ app.post("/login", async (req, res, next) => {
       next("Invalid username or password")
     } else {
       const token = await jwt.sign({ userId: user.id }, TOKEN_SECRET, { expiresIn: "1h" })
-      res.json({ token })
+      res.json({ token, username: user.username })
     }
   }
 })
@@ -167,21 +167,6 @@ app.post("/register", async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10)
     const createdUser = await User.create({ username, password: hashedPassword, firstName, lastName })
     res.json({ id: createdUser.id, username: createdUser.username })
-  }
-})
-
-
-// GET /me
-app.get("/me", authMW, async (req, res, next) => {
-  try {
-    const user = await User.findById(req.userId).select("-password")
-    if (!user) {
-      next("User not found")
-    } else {
-      res.json(user)
-    }
-  } catch (error) {
-    next(error)
   }
 })
 
@@ -445,14 +430,10 @@ app.get("/blogs/:id/comments", async (req, res, next) => {
 });
 
 
-// GET /comments - user comments
-app.get("/comments", async (req, res, next) => {
+// GET /comments
+app.get("/comments/:username", async (req, res, next) => {
   try {
-    const { user: username } = req.query;
-
-    if (!username) {
-      return next("Username is required");
-    }
+    const { username } = req.params;
 
     const user = await User.findOne({ username });
 
