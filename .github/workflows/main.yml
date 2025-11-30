@@ -56,5 +56,5 @@ jobs:
         script: |
           cd ~/blog-app/rookiehu01.github.io
           git pull
-          docker-compose down
-          docker-compose up -d --build
+          docker compose down
+          docker compose up -d --build
