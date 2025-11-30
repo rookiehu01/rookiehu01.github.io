@@ -1,2 +1,2 @@
-const BACKEND_URL = "http://164.92.186.165:8282";
+const BACKEND_URL = "https://api.rookiehu.me";
 export default BACKEND_URL;
