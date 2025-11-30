@@ -9,10 +9,18 @@ services:
     ports:
       - "8282:8282"
     restart: unless-stopped
+    networks:
+      - nginx-proxy-network
 
   frontend:
     build: ./frontend
     container_name: blog-frontend
     ports:
-      - "80:80"
+      - "5173:80"
     restart: unless-stopped
+    networks:
+      - nginx-proxy-network
+
+networks:
+  nginx-proxy-network:
+    external: true
