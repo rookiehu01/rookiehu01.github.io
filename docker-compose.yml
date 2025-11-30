@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: blog-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8282:8282"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: blog-frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
