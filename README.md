@@ -10,7 +10,6 @@ cp backend/.env.temp backend/.env
 ```
 
 2. And run
-
 ```bash
 npm install
 npm start
